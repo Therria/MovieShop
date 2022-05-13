@@ -1,0 +1,22 @@
+﻿@model List<ApplicationCore.Models.MovieCardModel>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h1>
+    home-index
+</h1>
+
+<div class="rounded">
+    <div class="container-fluid">
+        <div class="row">
+            @foreach (var movieCard in Model)
+            {
+                <div class="col-6 col-lg-3 col-xl-2 col-sm-6">
+                    <partial name="_MovieCardPartial" model="movieCard" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
