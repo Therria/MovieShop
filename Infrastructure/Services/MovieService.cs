@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Contracts.Services;
+﻿using ApplicationCore.Contracts.Repositories;
+using ApplicationCore.Contracts.Services;
 using ApplicationCore.Models;
 using Infrastructure.Repositories;
 using System;
@@ -11,13 +12,18 @@ namespace Infrastructure.Services
 {
     public class MovieService : IMovieService
     {
-        //private readonly IMovieService _movieService;
+        private readonly IMovieRepository _movieRepository;
 
-        //public MovieService(I)
+        public MovieService(IMovieRepository movieRepository)
+        {
+            _movieRepository = movieRepository;
+        }
+
         public List<MovieCardModel> GetTop30GrossingMovies()
         {
-            var movieRepo = new MovieRepository();
-            var movies = movieRepo.GetTop30GrossingMovies();
+            //var movieRepo = new MovieRepository();
+            //var movies = movieRepo.GetTop30GrossingMovies();
+            var movies = _movieRepository.GetTop30GrossingMovies();
 
             var movieCards = new List<MovieCardModel>();
             foreach (var movie in movies)

@@ -1,4 +1,6 @@
+using ApplicationCore.Contracts.Repositories;
 using ApplicationCore.Contracts.Services;
+using Infrastructure.Repositories;
 using Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +11,7 @@ builder.Services.AddControllersWithViews();
 // built-in Dependency Injection
 // Registrations
 builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 
 var app = builder.Build();
 
