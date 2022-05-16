@@ -23,6 +23,8 @@ namespace Infrastructure.Data
         public DbSet<Crew> Crews { get; set; }
         public DbSet<MovieCrew> MovieCrews { get; set; }
         public DbSet<Cast> Casts { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
         // Fluent API Method
 
@@ -39,6 +41,7 @@ namespace Infrastructure.Data
             modelBuilder.Entity<MovieGenre>(ConfigureMovieGenre);
             modelBuilder.Entity<MovieCrew>(ConfigureMovieCrew);
             modelBuilder.Entity<MovieCast>(ConfigureMovieCast);
+            modelBuilder.Entity<Review>(ConfigureReview);
         }
 
         private void ConfigureMovieGenre(EntityTypeBuilder<MovieGenre> builder)
@@ -59,6 +62,13 @@ namespace Infrastructure.Data
             builder.ToTable("MovieCast");
             builder.HasKey(mc => new { mc.MovieId, mc.CastId });
             builder.Property(mc => mc.Character).HasMaxLength(450).IsRequired();
+        }
+
+        private void ConfigureReview(EntityTypeBuilder<Review> builder)
+        {
+            builder.ToTable("Review");
+            builder.HasKey(r => new { r.MovieId, r.UserId });
+            builder.Property(mc => mc.Rating).HasPrecision(3,2).IsRequired();
         }
     }
 }

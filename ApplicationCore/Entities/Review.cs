@@ -13,5 +13,9 @@ namespace ApplicationCore.Entities
         public decimal Rating { get; set; }
         public string? ReviewText { get; set; }
 
+        // Navigation properties
+        public Movie Movie { get; set; }
+        public User User { get; set; }
+
     }
 }
