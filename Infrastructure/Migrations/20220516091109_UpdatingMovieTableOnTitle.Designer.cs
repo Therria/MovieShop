@@ -4,6 +4,7 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(MovieShopDbContext))]
-    partial class MovieShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220516091109_UpdatingMovieTableOnTitle")]
+    partial class UpdatingMovieTableOnTitle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -336,7 +338,7 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(2084)
                         .HasColumnType("nvarchar(2084)");
 
-                    b.Property<string>("TrailerUrl")
+                    b.Property<string>("TitleUrl")
                         .HasMaxLength(2084)
                         .HasColumnType("nvarchar(2084)");
 
@@ -355,7 +357,7 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("AccessFailedCount")
+                    b.Property<int?>("AcceddFailedCount")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("DateOfBirth")
@@ -394,7 +396,7 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(1024)
                         .HasColumnType("nvarchar(1024)");
 
-                    b.Property<bool?>("TwoFactorEnabled")
+                    b.Property<bool?>("TwoFactorEnanbled")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");

@@ -14,7 +14,8 @@ namespace ApplicationCore.Entities
         public int Id { get; set; }
 
         [MaxLength(256)]
-        public string? Title { get; set; }
+        [Required]
+        public string Title { get; set; }
 
         public string? Overview { get; set; }
         [MaxLength(512)]
