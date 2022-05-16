@@ -26,6 +26,7 @@ namespace Infrastructure.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<Purchase> Purchases { get; set; }
 
         // Fluent API Method
 

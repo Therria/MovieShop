@@ -40,6 +40,7 @@ namespace ApplicationCore.Entities
         // Navigation properties
         public ICollection<Review> Reviews { get; set; }
         public ICollection<Favorite> Favorites { get; set; }
+        public ICollection<Purchase> Purchases { get; set; }
 
     }
 }
