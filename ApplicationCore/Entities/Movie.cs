@@ -47,5 +47,9 @@ namespace ApplicationCore.Entities
         public DateTime? UpdatedDate { get; set; }
         public string? UpdatedBy{ get; set; }
         public string? CreatedBy { get; set; }
+
+        // Navigation Properties
+        public ICollection<Trailer> Trailers { get; set; }
+        public ICollection<MovieGenre> MoviesOfGenre { get; set; }
     }
 }

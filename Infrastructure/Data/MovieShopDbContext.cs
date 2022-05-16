@@ -18,6 +18,8 @@ namespace Infrastructure.Data
 
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Genre> Genres { get; set; }
+        public DbSet<Trailer> Trailers { get; set; }
+        public DbSet<MovieGenre> MovieGenres { get; set; }
 
         // Fluent API Method
 
@@ -30,6 +32,13 @@ namespace Infrastructure.Data
                 builder.HasKey(g => g.Id);
                 builder.Property(g => g.Name).HasMaxLength(64).IsRequired(); // isrequired = cannot be null
             });
+            modelBuilder.Entity<MovieGenre>(ConfigureMovieGenre);
+        }
+
+        private void ConfigureMovieGenre(EntityTypeBuilder<MovieGenre> builder)
+        {
+            builder.ToTable("MovieGenre");
+            builder.HasKey(mg => new { mg.MovieId, mg.GenreId });
         }
     }
 }
