@@ -27,8 +27,10 @@ namespace Infrastructure.Data
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
         public DbSet<Purchase> Purchases { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
 
-        // Fluent API Method
+        // Fluent API Method : Overriding OnModelCreating Method
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -44,6 +46,7 @@ namespace Infrastructure.Data
             modelBuilder.Entity<MovieCrew>(ConfigureMovieCrew);
             modelBuilder.Entity<MovieCast>(ConfigureMovieCast);
             modelBuilder.Entity<Review>(ConfigureReview);
+            modelBuilder.Entity<UserRole>(ConfigureUserRole);
 
         }
 
@@ -71,8 +74,13 @@ namespace Infrastructure.Data
         {
             builder.ToTable("Review");
             builder.HasKey(r => new { r.MovieId, r.UserId });
-            builder.Property(mc => mc.Rating).HasPrecision(3,2).IsRequired();
+            builder.Property(r => r.Rating).HasPrecision(3,2).IsRequired();
         }
 
+        private void ConfigureUserRole(EntityTypeBuilder<UserRole> builder)
+        {
+            builder.ToTable("UserRole");
+            builder.HasKey(ur => new { ur.UserId, ur.RoleId });
+        }
     }
 }
