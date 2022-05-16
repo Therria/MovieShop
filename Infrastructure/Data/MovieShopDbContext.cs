@@ -22,6 +22,7 @@ namespace Infrastructure.Data
         public DbSet<MovieGenre> MovieGenres { get; set; }
         public DbSet<Crew> Crews { get; set; }
         public DbSet<MovieCrew> MovieCrews { get; set; }
+        public DbSet<Cast> Casts { get; set; }
 
         // Fluent API Method
 
@@ -37,6 +38,7 @@ namespace Infrastructure.Data
             });
             modelBuilder.Entity<MovieGenre>(ConfigureMovieGenre);
             modelBuilder.Entity<MovieCrew>(ConfigureMovieCrew);
+            modelBuilder.Entity<MovieCast>(ConfigureMovieCast);
         }
 
         private void ConfigureMovieGenre(EntityTypeBuilder<MovieGenre> builder)
@@ -51,6 +53,12 @@ namespace Infrastructure.Data
             builder.HasKey(mc => new { mc.MovieId, mc.CrewId });
             builder.Property(mc => mc.Department).HasMaxLength(128).IsRequired();
             builder.Property(mc => mc.Job).HasMaxLength(128).IsRequired();
+        }
+        private void ConfigureMovieCast(EntityTypeBuilder<MovieCast> builder)
+        {
+            builder.ToTable("MovieCast");
+            builder.HasKey(mc => new { mc.MovieId, mc.CastId });
+            builder.Property(mc => mc.Character).HasMaxLength(450).IsRequired();
         }
     }
 }
