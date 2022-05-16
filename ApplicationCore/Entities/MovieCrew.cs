@@ -13,5 +13,9 @@ namespace ApplicationCore.Entities
         public string Department { get; set; }
         public string Job { get; set; }
 
+        // Navigation propertoes
+        public Movie Movie { get; set; }
+        public Crew Crew { get; set; }
+
     }
 }
