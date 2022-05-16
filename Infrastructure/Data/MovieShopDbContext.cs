@@ -25,6 +25,7 @@ namespace Infrastructure.Data
         public DbSet<Cast> Casts { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<Favorite> Favorites { get; set; }
 
         // Fluent API Method
 
@@ -42,6 +43,7 @@ namespace Infrastructure.Data
             modelBuilder.Entity<MovieCrew>(ConfigureMovieCrew);
             modelBuilder.Entity<MovieCast>(ConfigureMovieCast);
             modelBuilder.Entity<Review>(ConfigureReview);
+
         }
 
         private void ConfigureMovieGenre(EntityTypeBuilder<MovieGenre> builder)
@@ -70,5 +72,6 @@ namespace Infrastructure.Data
             builder.HasKey(r => new { r.MovieId, r.UserId });
             builder.Property(mc => mc.Rating).HasPrecision(3,2).IsRequired();
         }
+
     }
 }
