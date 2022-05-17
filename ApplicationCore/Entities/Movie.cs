@@ -38,7 +38,7 @@ namespace ApplicationCore.Entities
         [MaxLength(64)]
         public string? OriginalLanguage { get; set; }
         public DateTime? ReleaseDate { get; set; }
-        public int? runTime { get; set; }
+        public int? RunTime { get; set; }
 
         public decimal? Price { get; set; }
 

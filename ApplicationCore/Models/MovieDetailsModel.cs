@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Models
 {
-    public interface MovieDetailsModel
+    public class MovieDetailsModel
     {
         public MovieDetailsModel()
         {
@@ -16,7 +16,7 @@ namespace ApplicationCore.Models
         }
 
         public int Id { get; set; }
-        public string Title { get; set; }
+        public string? Title { get; set; }
         public string? Overview { get; set; }
         public string? Tagline { get; set; }
         public decimal? Budget { get; set; }
@@ -27,7 +27,7 @@ namespace ApplicationCore.Models
         public string? BackdropUrl { get; set; }
         public string? OriginalLanguage { get; set; }
         public DateTime? ReleaseDate { get; set; }
-        public int? runTime { get; set; }
+        public int? RunTime { get; set; }
         public decimal? Price { get; set; }
 
         public List<GenreModel> Genres { get; set; }

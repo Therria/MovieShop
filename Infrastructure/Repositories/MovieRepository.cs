@@ -27,12 +27,30 @@ namespace Infrastructure.Repositories
 
         public override Movie GetById(int id)
         {
-            // Movie m LEFT JOIN MovieGenre mg on m.id = mg.movieid LEFT JOIN Genre g on mg.genreid = g.id  +
-            // Movie m LEFT JOIN MovieCast mc on m.id = mc.movieid LEFT JOIN Cast c on mc.castid = c.id +
-            // Movie m LEFT JOIN MovieCrew mc on m.id = mc.movieid LEFT JOIN Crew c on mc.crewid = c.id
+            // SELECT ... FROM joint table below WHERE m.id = id
+            // Movie LEFT JOIN (MovieGenre JOIN Genre) LEFT JOIN (MovieCast JOIN Cast) LEFT JOIN (Trailer)
+            // SQL Code:
+            // SELECT[t].[Id], [t].[BackdropUrl], [t].[Budget], [t].[CreatedBy], [t].[CreatedDate], [t].[ImdbUrl], [t].[OriginalLanguage], [t].[Overview], [t].[PosterUrl], [t].[Price], [t].[ReleaseDate], [t].[Revenue], [t].[RunTime], [t].[Tagline], [t].[Title], [t].[TmdbUrl], [t].[UpdatedBy], [t].[UpdatedDate], [t0].[MovieId], [t0].[GenreId], [t0].[Id], [t0].[Name], [t1].[MovieId], [t1].[CastId], [t1].[Character], [t1].[Id], [t1].[Gender], [t1].[Name], [t1].[ProfilePath], [t1].[TmdbUrl], [t2].[Id], [t2].[MovieId], [t2].[Name], [t2].[TrailerUrl]
+            // FROM(
+            //    SELECT TOP(1)[m].[Id], [m].[BackdropUrl], [m].[Budget], [m].[CreatedBy], [m].[CreatedDate], [m].[ImdbUrl], [m].[OriginalLanguage], [m].[Overview], [m].[PosterUrl], [m].[Price], [m].[ReleaseDate], [m].[Revenue], [m].[RunTime], [m].[Tagline], [m].[Title], [m].[TmdbUrl], [m].[UpdatedBy], [m].[UpdatedDate]
+            //    FROM[Movie] AS[m]
+            //    WHERE[m].[Id] = @__id_0
+            // ) AS[t]
+            // LEFT JOIN(
+            //    SELECT[m0].[MovieId], [m0].[GenreId], [g].[Id], [g].[Name]
+            //    FROM [MovieGenre] AS [m0]
+            //    INNER JOIN [Genre] AS[g] ON [m0].[GenreId] = [g].[Id]
+            // ) AS[t0] ON[t].[Id] = [t0].[MovieId]
+            // LEFT JOIN(
+            //    SELECT[m1].[MovieId], [m1].[CastId], [m1].[Character], [c].[Id], [c].[Gender], [c].[Name], [c].[ProfilePath], [c].[TmdbUrl]
+            //    FROM [MovieCast] AS [m1]
+            //    INNER JOIN [Cast] AS[c] ON [m1].[CastId] = [c].[Id]
+            // ) AS[t1] ON[t].[Id] = [t1].[MovieId]
+            // LEFT JOIN[Trailer] AS[t2] ON[t].[Id] = [t2].[MovieId]
+            // ORDER BY[t].[Id], [t0].[MovieId], [t0].[GenreId], [t0].[Id], [t1].[MovieId], [t1].[CastId], [t1].[Id]
             var movie = _dbContext.Movies.Include(m => m.MoviesOfGenre).ThenInclude(m => m.Genre)
                 .Include(m => m.MoviesOfCast).ThenInclude(m => m.Cast)
-                .Include(m => m.MoviesOfCrew).ThenInclude(m => m.Crew)
+                .Include(m => m.Trailers)
                 .FirstOrDefault(m => m.Id == id);
 
             return movie;

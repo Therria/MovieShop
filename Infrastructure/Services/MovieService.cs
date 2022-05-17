@@ -19,6 +19,45 @@ namespace Infrastructure.Services
             _movieRepository = movieRepository;
         }
 
+        public MovieDetailsModel GetMovieDetails(int movieId)
+        {
+            var movie = _movieRepository.GetById(movieId);
+            var movieDetails = new MovieDetailsModel
+            {
+                Id = movie.Id,
+                Title = movie.Title,
+                Overview = movie.Overview,
+                Tagline = movie.Tagline,
+                Budget = movie.Budget,
+                Revenue = movie.Revenue,
+                ImdbUrl = movie.ImdbUrl,
+                TmdbUrl = movie.TmdbUrl,
+                PosterUrl = movie.PosterUrl,
+                BackdropUrl = movie.BackdropUrl,
+                OriginalLanguage = movie.OriginalLanguage,
+                ReleaseDate = movie.ReleaseDate.GetValueOrDefault(),
+                RunTime = movie.RunTime,
+                Price = movie.Price
+            };
+
+            foreach (var trailer in movie.Trailers)
+            {
+                movieDetails.Trailers.Add(new TrailerModel { Id = trailer.Id, Name = trailer.Name, TrailerUrl = trailer.TrailerUrl });
+            }
+
+            foreach (var genre in movie.MoviesOfGenre)
+            {
+                movieDetails.Genres.Add(new GenreModel { Id = genre.GenreId, Name = genre.Genre.Name });
+            }
+
+            foreach (var cast in movie.MoviesOfCast)
+            {
+                movieDetails.Casts.Add(new CastModel { Id = cast.CastId, Name = cast.Cast.Name, Character = cast.Character, ProfilePath = cast.Cast.ProfilePath });
+            }
+
+            return movieDetails;
+        }
+
         public List<MovieCardModel> GetTop30GrossingMovies()
         {
             //var movieRepo = new MovieRepository();
