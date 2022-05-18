@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using ApplicationCore.Models;
 
 namespace Infrastructure.Repositories
 {
@@ -54,6 +55,31 @@ namespace Infrastructure.Repositories
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             return movie;
+        }
+
+        public async Task<PagedResultSet<Movie>> GetMoviesByGenres(int genreId, int pageSize = 30, int pageNumber = 1)
+        {
+            var totalMoviesCountByGenre = await _dbContext.MovieGenres.Where(m => m.GenreId == genreId).CountAsync();
+
+            if (totalMoviesCountByGenre == 0)
+            {
+                throw new Exception("No Movies Found for that genre");
+            }
+
+            var movies = await _dbContext.MovieGenres.Where(g => g.GenreId == genreId).Include(m => m.Movie)
+                .OrderBy(m => m.MovieId)
+                // using SELECT to convert one entity object to another one
+                .Select(m => new Movie
+                {
+                    Id = m.MovieId,
+                    PosterUrl = m.Movie.PosterUrl,
+                    Title = m.Movie.Title
+                })
+                .Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            var pagedMovies = new PagedResultSet<Movie>(movies, pageNumber, pageSize, totalMoviesCountByGenre);
+
+            return pagedMovies;
         }
     }
 }
