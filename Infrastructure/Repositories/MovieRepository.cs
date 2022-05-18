@@ -16,16 +16,16 @@ namespace Infrastructure.Repositories
         {
         }
 
-        public List<Movie> GetTop30GrossingMovies()
+        public async Task<List<Movie>> GetTop30GrossingMovies()
         {
 
             // var top30Movies = movies.GetMovies().OrderByDescending(m => m.Revenue).Take(30);
-            var movies = _dbContext.Movies.OrderByDescending(m => m.Revenue).Take(30).ToList();
+            var movies = await _dbContext.Movies.OrderByDescending(m => m.Revenue).Take(30).ToListAsync();
 
             return movies;
         }
 
-        public override Movie GetById(int id)
+        public override async Task<Movie> GetById(int id)
         {
             // SELECT ... FROM joint table below WHERE m.id = id
             // Movie LEFT JOIN (MovieGenre JOIN Genre) LEFT JOIN (MovieCast JOIN Cast) LEFT JOIN (Trailer)
@@ -48,10 +48,10 @@ namespace Infrastructure.Repositories
             // ) AS[t1] ON[t].[Id] = [t1].[MovieId]
             // LEFT JOIN[Trailer] AS[t2] ON[t].[Id] = [t2].[MovieId]
             // ORDER BY[t].[Id], [t0].[MovieId], [t0].[GenreId], [t0].[Id], [t1].[MovieId], [t1].[CastId], [t1].[Id]
-            var movie = _dbContext.Movies.Include(m => m.MoviesOfGenre).ThenInclude(m => m.Genre)
+            var movie = await _dbContext.Movies.Include(m => m.MoviesOfGenre).ThenInclude(m => m.Genre)
                 .Include(m => m.MoviesOfCast).ThenInclude(m => m.Cast)
                 .Include(m => m.Trailers)
-                .FirstOrDefault(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             return movie;
         }
