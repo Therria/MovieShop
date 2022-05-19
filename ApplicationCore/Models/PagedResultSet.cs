@@ -14,7 +14,7 @@ namespace ApplicationCore.Models
             PageSize = pageSize;
             Count = count;
             Data = data;
-            TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+            TotalPages = (int)Math.Ceiling(count / (double)pageSize);
         }
 
         public int PageIndex { get; }

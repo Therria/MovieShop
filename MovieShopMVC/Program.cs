@@ -14,6 +14,8 @@ builder.Services.AddControllersWithViews();
 // Registrations
 builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 //Inject DbContextOptions with
 builder.Services.AddDbContext<MovieShopDbContext>( Options =>

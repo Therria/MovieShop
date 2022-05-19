@@ -15,9 +15,5 @@ namespace Infrastructure.Repositories
         {
         }
 
-        public override Cast GetById(int id)
-        {
-            return base.GetById(id);
-        }
     }
 }

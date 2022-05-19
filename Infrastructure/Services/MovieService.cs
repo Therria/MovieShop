@@ -90,7 +90,7 @@ namespace Infrastructure.Services
                 Title = m.Title
             }));
 
-            return new PagedResultSet<MovieCardModel>(movieCards, pageSize, pageNumber, pagedMovies.Count);
+            return new PagedResultSet<MovieCardModel>(movieCards, pageNumber, pageSize, pagedMovies.Count);
         }
     }
 }
