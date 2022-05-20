@@ -3,6 +3,7 @@ using ApplicationCore.Contracts.Services;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +24,15 @@ builder.Services.AddDbContext<MovieShopDbContext>( Options =>
     Options.UseSqlServer(builder.Configuration.GetConnectionString("MocvieShopDbConnection"));
 });
 
+// Cookie Info
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.Cookie.Name = "MovieShopAuthCookie";
+        options.ExpireTimeSpan = TimeSpan.FromHours(2);
+        options.LoginPath = "/account/login";
+    });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -33,12 +43,19 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
+// Middleware in ASP.NET Core 
+// Order matters!
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",

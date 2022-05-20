@@ -37,13 +37,15 @@ namespace Infrastructure.Services
                 // password correct -> go back to home page
                 var userLoginResponseModel = new UserLoginResponseModel
                 {
-                    id = dbUser.Id,
+                    Id = dbUser.Id,
                     Email = dbUser.Email,
                     FirstName = dbUser.FirstName,
                     LastName = dbUser.LastName,
                 };
                 return userLoginResponseModel;
             }
+
+            // throw new Exception("Email/password does not match");
             return null;
         }
 
