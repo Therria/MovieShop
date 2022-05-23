@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,8 @@ namespace ApplicationCore.Models
         public List<GenreModel> Genres { get; set; }
         public List<CastModel> Casts { get; set; }
         public List<TrailerModel> Trailers { get; set; }
+        
+        [Column(TypeName ="decimal(2,1)")]
         public Decimal RatingAvg { get; set; }
     }
 }

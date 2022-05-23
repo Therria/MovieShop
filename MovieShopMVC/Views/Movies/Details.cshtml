@@ -9,9 +9,9 @@
         <!-- Title & partial details -->
         <div class="col-5">
             <h3 style="color:aliceblue">@Model.Title</h3>
-            <p>@Model.Tagline</p>
+            <p style="color:gray; font-size:small">@Model.Tagline</p>
             <div> 
-                <span>@Model.RunTime m | @Model.ReleaseDate.Value.ToString("yyyy")</span>
+                <span style="color:grey; font-weight:bold">@Model.RunTime m | @Model.ReleaseDate.Value.ToString("yyyy")</span>
                 @foreach (var genre in Model.Genres)
                 {
                     <span class="badge rounded-pill bg-secondary">@genre.Name</span>
@@ -100,11 +100,11 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-4">
-            <h5>MOVIE FACTS</h5>
+    <div class="row mt-3">
+        <div class="col-4" style="background-color:aliceblue">
+            <h5 class="my-3">MOVIE FACTS</h5>
             <ul class="list-group list-group-flush">
-              <li class="list-group-item">
+              <li class="list-group-item" style="background-color:aliceblue">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar4-week" viewBox="0 0 16 16">
                     <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1H2zm13 3H1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5z"/>
                     <path d="M11 7.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-2 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
@@ -112,14 +112,14 @@
                   Release Date
                   <span class="badge rounded-pill bg-dark">@Model.ReleaseDate.Value.ToString("dd mm yyyy")</span>
               </li>
-              <li class="list-group-item">
+              <li class="list-group-item" style="background-color:aliceblue">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hourglass-split" viewBox="0 0 16 16">
                       <path d="M2.5 15a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11zm2-13v1c0 .537.12 1.045.337 1.5h6.326c.216-.455.337-.963.337-1.5V2h-7zm3 6.35c0 .701-.478 1.236-1.011 1.492A3.5 3.5 0 0 0 4.5 13s.866-1.299 3-1.48V8.35zm1 0v3.17c2.134.181 3 1.48 3 1.48a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351z"/>
                   </svg>
                   Run Time
                   <span class="badge rounded-pill bg-dark">@Model.RunTime m</span>
               </li>
-              <li class="list-group-item">
+              <li class="list-group-item" style="background-color:aliceblue">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cash" viewBox="0 0 16 16">
                     <path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
                     <path d="M0 4a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V4zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V6a2 2 0 0 1-2-2H3z"/>
@@ -127,25 +127,25 @@
                   Box Office
                   <span class="badge rounded-pill bg-dark">$@Model.Revenue</span>
               </li>
-              <li class="list-group-item">
+              <li class="list-group-item" style="background-color:aliceblue">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-currency-dollar" viewBox="0 0 16 16">
                     <path d="M4 10.781c.148 1.667 1.513 2.85 3.591 3.003V15h1.043v-1.216c2.27-.179 3.678-1.438 3.678-3.3 0-1.59-.947-2.51-2.956-3.028l-.722-.187V3.467c1.122.11 1.879.714 2.07 1.616h1.47c-.166-1.6-1.54-2.748-3.54-2.875V1H7.591v1.233c-1.939.23-3.27 1.472-3.27 3.156 0 1.454.966 2.483 2.661 2.917l.61.162v4.031c-1.149-.17-1.94-.8-2.131-1.718H4zm3.391-3.836c-1.043-.263-1.6-.825-1.6-1.616 0-.944.704-1.641 1.8-1.828v3.495l-.2-.05zm1.591 1.872c1.287.323 1.852.859 1.852 1.769 0 1.097-.826 1.828-2.2 1.939V8.73l.348.086z"/>
                   </svg>
                   Budget
                   <span class="badge rounded-pill bg-dark">$@Model.Budget</span>
               </li>
-              <li class="list-group-item">
+              <li class="list-group-item" style="background-color:aliceblue">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
                     <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
                   </svg>
               </li>
             </ul>
-            <h5>TRAILERS</h5>
+            <h5 class="my-3">TRAILERS</h5>
             <ul class="list-group list-group-flush">
                 @foreach (var trailer in Model.Trailers)
                 {
-                    <li class="list-group-item">
+                    <li class="list-group-item" style="background-color:aliceblue">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-btn-fill" viewBox="0 0 16 16">
                           <path d="M0 12V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm6.79-6.907A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z"/>
                         </svg>
@@ -155,7 +155,7 @@
             </ul>
         </div>
         <div class="col-8">
-            <h5>CAST</h5>
+            <h5 class="my-3">CAST</h5>
             @foreach (var cast in Model.Casts)
             {
                 <hr class="my-0"/>
