@@ -37,7 +37,7 @@ namespace Infrastructure.Services
                 OriginalLanguage = movie.OriginalLanguage,
                 ReleaseDate = movie.ReleaseDate.GetValueOrDefault(),
                 RunTime = movie.RunTime,
-                Price = movie.Price
+                Price = movie.Price                
             };
 
             foreach (var trailer in movie.Trailers)
@@ -54,6 +54,8 @@ namespace Infrastructure.Services
             {
                 movieDetails.Casts.Add(new CastModel { Id = cast.CastId, Name = cast.Cast.Name, Character = cast.Character, ProfilePath = cast.Cast.ProfilePath });
             }
+
+            movieDetails.RatingAvg = movie.Reviews.Average(r => r.Rating);
 
             return movieDetails;
         }
@@ -91,6 +93,22 @@ namespace Infrastructure.Services
             }));
 
             return new PagedResultSet<MovieCardModel>(movieCards, pageNumber, pageSize, pagedMovies.Count);
+        }
+
+        public async Task<List<GenreModel>> GetGenreList()
+        {
+            var genres = await _movieRepository.GetGenreList();
+            var genrelist = new List<GenreModel>();
+            foreach (var genre in genres)
+            {
+                genrelist.Add(new GenreModel
+                {
+                    Id = genre.Id,
+                    Name = genre.Name
+                });
+            }
+
+            return genrelist;
         }
     }
 }

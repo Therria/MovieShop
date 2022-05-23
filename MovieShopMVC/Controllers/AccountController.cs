@@ -28,6 +28,12 @@ namespace MovieShopMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(UserRegisterModel model)
         {
+            // check if validated
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
             try 
             {
                 var user = await _accountService.RegisterUser(model);

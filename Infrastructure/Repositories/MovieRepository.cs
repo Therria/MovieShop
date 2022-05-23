@@ -52,6 +52,7 @@ namespace Infrastructure.Repositories
             var movie = await _dbContext.Movies.Include(m => m.MoviesOfGenre).ThenInclude(m => m.Genre)
                 .Include(m => m.MoviesOfCast).ThenInclude(m => m.Cast)
                 .Include(m => m.Trailers)
+                .Include(m => m.Reviews)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             return movie;
@@ -80,6 +81,13 @@ namespace Infrastructure.Repositories
             var pagedMovies = new PagedResultSet<Movie>(movies, pageNumber, pageSize, totalMoviesCountByGenre);
 
             return pagedMovies;
+        }
+
+        public async Task<List<Genre>> GetGenreList()
+        {
+            var genres = await _dbContext.Genres.OrderBy(g => g.Name).ToListAsync();
+            return genres;
+            
         }
     }
 }

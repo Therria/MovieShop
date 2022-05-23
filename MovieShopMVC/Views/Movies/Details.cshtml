@@ -4,7 +4,7 @@
     <div class="row" style="background-image:url(@Model.BackdropUrl);background-color: darkgray">
         <!-- Poster -->
         <div class="col-4">
-            <img class="w-50 float-end" src="@Model.PosterUrl" alt="@Model.Title">
+            <img class="w-50 float-end" src="@Model.PosterUrl" alt="@Model.Title Poster">
         </div>
         <!-- Title & partial details -->
         <div class="col-5">
@@ -17,7 +17,7 @@
                     <span class="badge rounded-pill bg-secondary">@genre.Name</span>
                 }
             </div>
-            <div><span class="badge bg-success">Ave Rating</span></div>
+            <div><span class="badge bg-success">@Model.RatingAvg</span></div>
             <p>@Model.Overview</p>
         </div>
         <!-- Buttons -->

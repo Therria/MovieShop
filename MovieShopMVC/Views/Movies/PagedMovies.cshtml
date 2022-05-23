@@ -2,11 +2,9 @@
 
 <script src="~/Scripts/PageTo.js" type="text/javascript"></script>
 
-<input type="text" class="form-control" id="txtResult" placeholder="result" disabled="">
 <div class="rounded">
     <div class="container-fluid">
         <div class="row">
-            @Model.PageIndex = <span id = "pageTo"></span>
             @foreach (var movieCard in Model.Data)
             {
                 <div class="col-6 col-lg-3 col-xl-2 col-sm-6">
@@ -19,10 +17,10 @@
 
 <nav aria-label="Page navigation example">
   <ul class="pagination">
-    @for (var i = 0; i < Model.TotalPages; i++)
+    @for (var i = 1; i <= Model.TotalPages; i++)
     {
        <li class="page-item">
-           <a class="page-link" asp-controller="Movies" asp-action="Genres" asp-route-PageIndex="@i" id="pageNumber">
+           <a class="page-link" asp-controller="Movies" asp-action="Genres" asp-route-PageNumber="@i">
                @i
            </a>
        </li>         

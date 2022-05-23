@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Contracts.Services;
+using ApplicationCore.Models;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using MovieShopMVC.Models;
