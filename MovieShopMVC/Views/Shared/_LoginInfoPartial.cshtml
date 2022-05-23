@@ -1,4 +1,36 @@
-﻿<div class="text-end">
-    <a class="btn btn-outline-dark me-2" asp-controller="Account" asp-action="Login"> Login </a>
-    <a class="btn btn-outline-dark me-2" asp-controller="Account" asp-action="Register"> Register </a>
-</div>
+﻿@using MovieShopMVC.Services
+@*// check if is logged in
+// if yes, show Name and links for purchases, favorites and log out button
+// if not, show login and register button*@
+
+@inject ICurrentUser currentUser
+
+@if (currentUser.IsAuthenticated)
+{
+    // logged in
+    <div class="text-end">
+        <ul class="nav">
+            <li class="nav-item dropdown text-captalize">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    @currentUser.FullName
+                </a>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" asp-controller="User" asp-action="Purchases">Library</a></li>
+                    <li><a class="dropdown-item" asp-controller="User" asp-action="Favorites">Favorites</a></li>
+                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">Account</a></li>
+                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Logout</a></li>
+                  </ul>
+            </li>
+        </ul>
+    </div>
+}
+else
+{
+    // not logged in
+    <div class="text-end">
+        <a class="btn btn-outline-dark me-2" asp-controller="Account" asp-action="Login"> Login </a>
+        <a class="btn btn-outline-dark me-2" asp-controller="Account" asp-action="Register"> Register </a>
+    </div>
+}
+
+

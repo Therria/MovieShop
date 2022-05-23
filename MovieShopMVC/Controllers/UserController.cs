@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace MovieShopMVC.Controllers
 {
     [Authorize]
     public class UserController : Controller
     {
+
         [HttpGet]
         public async Task<IActionResult> Purchases()
         {
@@ -23,12 +25,22 @@ namespace MovieShopMVC.Controllers
             //var userId = this.HttpContext.User.Claims.FirstOrDefault(x => x.ValueType == ClaimType.Identifier)?.Value;
 
             // Instead, using Filters in ASP.NET
+            var uerId = Convert.ToInt32(this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            // call UserService -> GetMoviesPurchasedByUser(int userId) -> List<MovieCard>
             return View();
         }
 
         [HttpGet]
         public async Task<IActionResult> Favorites()
         {
+            var uerId = Convert.ToInt32(this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Reviews()
+        {
+            var uerId = Convert.ToInt32(this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             return View();
         }
     }
