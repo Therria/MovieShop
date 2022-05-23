@@ -1,0 +1,23 @@
+﻿#title {
+    color: aliceblue;
+}
+
+#tag {
+    color: gray;
+    font-size: small
+}
+
+#runtimeAndYear {
+    color: grey;
+    font-weight: bold;
+    font-size: 0.9em
+}
+
+#overview {
+    color: lightgrey;
+    font-size: 0.9em
+}
+
+.lightbg {
+    background-color:aliceblue;
+}

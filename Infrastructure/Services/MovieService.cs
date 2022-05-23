@@ -55,7 +55,7 @@ namespace Infrastructure.Services
                 movieDetails.Casts.Add(new CastModel { Id = cast.CastId, Name = cast.Cast.Name, Character = cast.Character, ProfilePath = cast.Cast.ProfilePath });
             }
 
-            movieDetails.RatingAvg = movie.Reviews.Average(r => r.Rating);
+            movieDetails.RatingAvg = Decimal.Round(movie.Reviews.Average(r => r.Rating), 1) ;
 
             return movieDetails;
         }

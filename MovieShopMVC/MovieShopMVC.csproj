@@ -7,9 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Content\.editorconfig" />
+    <None Remove="wwwroot\Content\.editorconfig" />
     <None Remove="Views\Movies\DetailsStyleSheet.css" />
     <None Remove="Views\Movies\MovieDetailsStyleSheet.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Content\Details.css" />
   </ItemGroup>
 
   <ItemGroup>
