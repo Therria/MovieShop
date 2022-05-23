@@ -34,8 +34,7 @@ namespace ApplicationCore.Models
         public List<GenreModel> Genres { get; set; }
         public List<CastModel> Casts { get; set; }
         public List<TrailerModel> Trailers { get; set; }
-        
-        [Column(TypeName ="decimal(2,1)")]
+      
         public Decimal RatingAvg { get; set; }
     }
 }

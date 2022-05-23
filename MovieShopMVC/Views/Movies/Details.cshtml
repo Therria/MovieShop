@@ -1,7 +1,4 @@
 ﻿@model ApplicationCore.Models.MovieDetailsModel
-@*<head>
-    <link rel="stylesheet" href="~/Content/Details.css" type="text/css"/>
-</head>*@
 
 
 <div class="mx-0">
@@ -169,7 +166,7 @@
             {
                 <hr class="my-0"/>
                 <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item mx-1" style="width:100px;border:0"><img src="@cast.ProfilePath" class="rounded-circle mh-100" alt="@cast.Name" style="width:35px"></li>
+                  <li class="list-group-item mx-1" style="width:100px;border:0"><img src="@cast.ProfilePath" id="profilePhoto" class="rounded-circle mh-100" alt="@cast.Name"></li>
                   <li class="list-group-item mx-5 my-2" style="width:200px;border:0">@cast.Name</li>
                   <li class="list-group-item mx-5 my-2" style="width:200px;border:0">@cast.Character</li>
                 </ul>

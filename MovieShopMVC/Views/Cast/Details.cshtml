@@ -1,0 +1,28 @@
+﻿@model ApplicationCore.Models.CastDetailsModel
+
+<div class="row mb-5 p-2" style="background-color:beige">
+    <div class="col-5 text-end">
+        <img src=@Model.ProfilePath style="width:200px" class="rounded" />
+    </div>
+    <div class="col-7">
+        <h3>@Model.Name</h3>
+        <p>Gender: @Model.Gender</p>
+        <a src=@Model.TmdbUrl >TmdbUrl</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="rounded">
+        <div class="container-fluid">
+            <div class="row">
+                <h5>Movie List</h5>
+                @foreach (var movieCard in Model.Movies)
+                {
+                    <div class="col-6 col-lg-3 col-xl-2 col-sm-6">
+                        <partial name="_MovieCardPartial" model="movieCard" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

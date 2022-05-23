@@ -1,6 +1,7 @@
 ﻿using ApplicationCore.Contracts.Repositories;
 using ApplicationCore.Entities;
 using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,14 @@ namespace Infrastructure.Repositories
     {
         public CastRepository(MovieShopDbContext dbContext) : base(dbContext)
         {
+        }
+
+        public override async Task<Cast> GetById(int id)
+        {
+            var cast = await _dbContext.Casts.Include(c => c.CastsOfMovie).ThenInclude(c => c.Movie)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            return cast;
         }
 
     }
