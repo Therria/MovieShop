@@ -28,7 +28,7 @@ builder.Services.AddHttpContextAccessor();
 //Inject DbContextOptions with
 builder.Services.AddDbContext<MovieShopDbContext>( Options =>
 {
-    Options.UseSqlServer(builder.Configuration.GetConnectionString("MocvieShopDbConnection"));
+    Options.UseSqlServer(builder.Configuration.GetConnectionString("MovieShopDbConnection"));
 });
 
 // Cookie Info
