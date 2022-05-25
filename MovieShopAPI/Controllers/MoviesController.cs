@@ -10,6 +10,7 @@ namespace MovieShopAPI.Controllers
     public class MoviesController : ControllerBase
     {
         private readonly IMovieService _movieService;
+        private readonly IUserService _userService;
 
         public MoviesController(IMovieService movieServive)
         {
@@ -90,6 +91,12 @@ namespace MovieShopAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetReviews(int id)
         {
+            var reviews = await _userService.GetAllReviewsByUser(id);
+            if (reviews == null)
+            {
+                // 404 NotFound
+                return NotFound(new { errorMessage = "No Movies Found" });
+            }
             return Ok();
         }
 

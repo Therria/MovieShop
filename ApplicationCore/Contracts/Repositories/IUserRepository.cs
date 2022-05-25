@@ -14,6 +14,10 @@ namespace ApplicationCore.Contracts.Repositories
         Task<User> GetUserById(int id);
 
 
-        
+        Task<List<Review>> GetReviewsByUserId(int userId);
+        Task<Review> GetReviewByUserIdAndMovieId(int userId, int movieId);
+        Task<bool> AddReview(int userId, int movieId, decimal rating, string reviewText);
+        Task<bool> UpdateReview(int userId, int movieId, decimal rating, string reviewText);
+        Task<bool> DeleteReview(int userId, int movieId);
     }
 }

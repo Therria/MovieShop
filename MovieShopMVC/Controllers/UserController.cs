@@ -74,8 +74,39 @@ namespace MovieShopMVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Reviews()
         {
-            var uerId = Convert.ToInt32(this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            return View();
+            var uerId = GetUserId();
+            var reviews = await _userService.GetAllReviewsByUser(uerId);
+            return View(reviews);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddReview(ReviewRequestModel model)
+        {
+            var uerId = GetUserId();
+            var reviews = await _userService.GetAllReviewsByUser(uerId);
+            return View(reviews);
+        }
+
+
+        //[HttpPost]
+        //public async Task<IActionResult> AddReview(int movieId, decimal rating = 9, string text = " ")
+        //{
+        //    var uerId = GetUserId();
+        //    var result = await _userService.AddMovieReview(new ReviewRequestModel
+        //    {
+        //        MovieId = movieId,
+        //        Rating = rating,
+        //        ReviewText = text,
+        //        UserId = uerId
+        //    });
+        //    if (result)
+        //    {
+        //        return LocalRedirect("~/");
+        //    }
+        //    else
+        //    {
+        //        throw new Exception("add review failed");
+        //    }
+        //}
     }
 }

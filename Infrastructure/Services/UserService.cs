@@ -31,7 +31,7 @@ namespace Infrastructure.Services
 
             foreach (var purchase in purchases)
             {
-                var purchaseDetails = new PurchaseDetailsModel()
+                purchaseReponse.PurchaseDetails.Add(new PurchaseDetailsModel()
                 {
                     Id = purchase.Id,
                     PurchaseNumber = purchase.PurchaseNumber,
@@ -43,11 +43,11 @@ namespace Infrastructure.Services
                         PosterUrl = purchase.Movie.PosterUrl,
                         Title = purchase.Movie.Title
                     }
-                };
+                });
             }
 
             return purchaseReponse;
-        }
+        }      
 
         public async Task<PurchaseDetailsModel> GetPurchasesDetails(int userId, int movieId)
         {
@@ -104,6 +104,62 @@ namespace Infrastructure.Services
 
         }
 
+        public async Task<bool> UpdateMovieReview(ReviewRequestModel reviewRequest)
+        {
+            var user = await _userRepository.GetUserById(reviewRequest.UserId);
+            if (user == null)
+            {
+                throw new Exception("User was not found");
+            }
 
+            return await _userRepository.UpdateReview(reviewRequest.UserId,
+                reviewRequest.MovieId, reviewRequest.Rating, reviewRequest.ReviewText);
+        }
+
+        public async Task<bool> AddMovieReview(ReviewRequestModel reviewRequest)
+        {
+            var user = await _userRepository.GetUserById(reviewRequest.UserId);
+            if (user == null)
+            {
+                throw new Exception("User was not found");
+            }
+
+            return await _userRepository.AddReview(reviewRequest.UserId, 
+                reviewRequest.MovieId, reviewRequest.Rating, reviewRequest.ReviewText);
+        }
+
+        public async Task<bool> DeleteMovieReview(int userId, int movieId)
+        {
+            var user = _userRepository.GetUserById(userId);
+            if (user == null)
+            {
+                throw new Exception("User was not found");
+            }
+
+            return await _userRepository.DeleteReview(userId, movieId);
+        }
+
+        public async Task<ReviewResponseModel> GetAllReviewsByUser(int id)
+        {
+            var purchases = await _userRepository.GetReviewsByUserId(id);
+            var reviewResponse = new ReviewResponseModel()
+            {
+                UserId = id
+            };
+            foreach (var purchase in purchases)
+            {
+                reviewResponse.ReviewDetails.Add(new ReviewDetailsModel()
+                {
+                    MovieId = purchase.MovieId,
+                    UserId = purchase.UserId,
+                    Rating = purchase.Rating,
+                    ReviewText = purchase.ReviewText,
+                    Title = purchase.Movie.Title,
+                    PosterUrl = purchase.Movie.PosterUrl
+                });
+            }
+
+            return reviewResponse;
+        }
     }
 }
