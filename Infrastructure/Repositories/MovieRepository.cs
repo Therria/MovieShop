@@ -26,6 +26,22 @@ namespace Infrastructure.Repositories
             return movies;
         }
 
+        public async Task<List<Movie>> GetTop30RatedMovies()
+        {
+            var topRatedIds = await _dbContext.Reviews.Include(r => r.Movie).GroupBy(r => r.MovieId)
+                .Select(m => new
+                {
+                    MovieId = m.Key,
+                    RatingAve = m.Average(r => r.Rating)
+                })
+                .OrderByDescending(m => m.RatingAve)
+                .Select(r => r.MovieId)
+                .Take(30).ToListAsync();
+            var movies = await _dbContext.Movies.Where(m => topRatedIds.Contains(m.Id)).ToListAsync();
+
+            return movies;
+        }
+
         public override async Task<Movie> GetById(int id)
         {
             // SELECT ... FROM joint table below WHERE m.id = id
@@ -89,5 +105,7 @@ namespace Infrastructure.Repositories
             return genres;
             
         }
+
+        
     }
 }

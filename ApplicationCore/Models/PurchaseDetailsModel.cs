@@ -8,5 +8,12 @@ namespace ApplicationCore.Models
 {
     public class PurchaseDetailsModel
     {
+        public int Id { get; set; }
+        public Guid PurchaseNumber { get; set; }
+        public decimal TotalPrice { get; set; }
+        public DateTime PurchaseDateTime { get; set; }
+
+        public MovieCardModel MovieCard { get; set; }
+
     }
 }

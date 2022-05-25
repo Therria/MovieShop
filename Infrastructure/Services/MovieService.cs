@@ -22,6 +22,11 @@ namespace Infrastructure.Services
         public async Task<MovieDetailsModel> GetMovieDetails(int movieId)
         {
             var movie = await _movieRepository.GetById(movieId);
+            if (movie == null)
+            {
+                return null;
+            }
+
             var movieDetails = new MovieDetailsModel
             {
                 Id = movie.Id,
@@ -39,6 +44,7 @@ namespace Infrastructure.Services
                 RunTime = movie.RunTime,
                 Price = movie.Price                
             };
+
 
             foreach (var trailer in movie.Trailers)
             {
@@ -95,6 +101,9 @@ namespace Infrastructure.Services
             return new PagedResultSet<MovieCardModel>(movieCards, pageNumber, pageSize, pagedMovies.Count);
         }
 
+
+
+
         public async Task<List<GenreModel>> GetGenreList()
         {
             var genres = await _movieRepository.GetGenreList();
@@ -109,6 +118,24 @@ namespace Infrastructure.Services
             }
 
             return genrelist;
+        }
+
+        public async Task<List<MovieCardModel>> GetTop30RatedMovies()
+        {
+            var movies = await _movieRepository.GetTop30RatedMovies();
+            var movieCards = new List<MovieCardModel>();
+            foreach (var movie in movies)
+            {
+                movieCards.Add(new MovieCardModel
+                {
+                    Id = movie.Id,
+                    Title = movie.Title,
+                    PosterUrl = movie.PosterUrl
+                });
+            }
+
+            return movieCards;
+
         }
     }
 }

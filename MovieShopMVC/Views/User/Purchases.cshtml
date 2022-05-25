@@ -1,20 +1,18 @@
-﻿@model List<ApplicationCore.Models.MovieCardModel>
-
-@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model ApplicationCore.Models.PurchaseReponseModel
 
 <h3 class="my-2 px-2" style="font-family:Arial">
-    Welcome to the Movie Shop!
+    Favorite movie list
 </h3>
 
 <div class="rounded">
     <div class="container-fluid">
         <div class="row">
-            @foreach (var movieCard in Model)
+            @foreach (var purchaseDetails in Model.PurchaseDetails)
             {
+                var movieCard = purchaseDetails.MovieCard;
                 <div class="col-6 col-lg-3 col-xl-2 col-sm-6">
                     <partial name="_MovieCardPartial" model="movieCard" />
+                    card
                 </div>
             }
         </div>

@@ -33,14 +33,12 @@ namespace MovieShopMVC.Controllers
             {
                 return View();
             }
+            
+            var user = await _accountService.RegisterUser(model);
 
-            try 
+            if (user == null)
             {
-                var user = await _accountService.RegisterUser(model);
-            }
-            catch (ConflictException ex)
-            {
-                throw;
+                throw new Exception("Register failed");
             }
             
             return RedirectToAction("Login");

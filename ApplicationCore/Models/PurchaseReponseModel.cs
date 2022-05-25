@@ -8,5 +8,15 @@ namespace ApplicationCore.Models
 {
     public class PurchaseReponseModel
     {
+        public PurchaseReponseModel()
+        {
+            PurchaseDetails = new List<PurchaseDetailsModel>();
+        }
+
+        public int UserId { get; set; }
+        
+        public List<PurchaseDetailsModel> PurchaseDetails { get; set; }
+
+        
     }
 }

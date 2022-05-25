@@ -14,5 +14,10 @@ namespace ApplicationCore.Contracts.Services
         Task<bool> IsMoviePurchased(PurchaseRequestModel purchaseRequest, int userId);
         Task<PurchaseReponseModel> GetAllPurchasesForUser(int id);
         Task<PurchaseDetailsModel> GetPurchasesDetails(int userId, int movieId);
+
+        //Task<> AddMovieReview(ReviewRequestModel reviewRequest);
+        //Task UpdateMovieReview(ReviewRequestModel reviewRequest);
+        //Task DeleteMovieReview(int userId, int movieId);
+        //Task GetAllReviewsByUser(int id);
     }
 }

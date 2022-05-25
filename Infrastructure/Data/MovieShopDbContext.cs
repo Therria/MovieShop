@@ -35,7 +35,7 @@ namespace Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // specify the rules for Entity
-            modelBuilder.Entity<Movie>().Property(m => m.Price).HasPrecision(5,2);
+            modelBuilder.Entity<Movie>().Property(m => m.Price).HasPrecision(5,2).HasDefaultValue(9.9m);
             modelBuilder.Entity<Genre>(builder =>
             {
                 builder.ToTable("Genre");

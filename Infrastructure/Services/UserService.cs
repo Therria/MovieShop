@@ -20,19 +20,59 @@ namespace Infrastructure.Services
             _userRepository = userRepository;
             _purchaseRepository = purchaseRepository;
         }
-        public Task<PurchaseReponseModel> GetAllPurchasesForUser(int id)
+
+        public async Task<PurchaseReponseModel> GetAllPurchasesForUser(int id)
         {
-            throw new NotImplementedException();
+            var purchases = await _purchaseRepository.GetPurchasesByUserId(id);
+            var purchaseReponse = new PurchaseReponseModel()
+            {
+                UserId = id,
+            };
+
+            foreach (var purchase in purchases)
+            {
+                var purchaseDetails = new PurchaseDetailsModel()
+                {
+                    Id = purchase.Id,
+                    PurchaseNumber = purchase.PurchaseNumber,
+                    PurchaseDateTime = purchase.PurchaseDateTime,
+                    TotalPrice = purchase.TotalPrice,
+                    MovieCard = new MovieCardModel()
+                    {
+                        Id = purchase.MovieId,
+                        PosterUrl = purchase.Movie.PosterUrl,
+                        Title = purchase.Movie.Title
+                    }
+                };
+            }
+
+            return purchaseReponse;
         }
 
-        public Task<PurchaseDetailsModel> GetPurchasesDetails(int userId, int movieId)
+        public async Task<PurchaseDetailsModel> GetPurchasesDetails(int userId, int movieId)
         {
-            throw new NotImplementedException();
+            var purchase = await _purchaseRepository.GetPurchasesByUserIdAndMovieId(userId, movieId);
+            var purchaseDetails = new PurchaseDetailsModel()
+            {
+                Id = purchase.Id,
+                PurchaseNumber = purchase.PurchaseNumber,
+                PurchaseDateTime = purchase.PurchaseDateTime,
+                TotalPrice = purchase.TotalPrice,
+                MovieCard = new MovieCardModel()
+                {
+                    Id = movieId,
+                    PosterUrl = purchase.Movie.PosterUrl,
+                    Title = purchase.Movie.Title
+                }
+            };
+
+            return purchaseDetails;
         }
 
-        public Task<bool> IsMoviePurchased(PurchaseRequestModel purchaseRequest, int userId)
+        public async Task<bool> IsMoviePurchased(PurchaseRequestModel purchaseRequest, int userId)
         {
-            throw new NotImplementedException();
+            var purchase = await _purchaseRepository.GetPurchasesByUserIdAndMovieId(userId, purchaseRequest.MovieId);
+            return purchase != null;
         }
 
         public async Task<bool> PurchaseMovie(PurchaseRequestModel purchaseRequest, int userId)
@@ -63,5 +103,7 @@ namespace Infrastructure.Services
             return false;
 
         }
+
+
     }
 }

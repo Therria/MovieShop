@@ -1,0 +1,42 @@
+﻿@using ApplicationCore.Models
+@model ApplicationCore.Models.MovieDetailsModel
+
+<div>
+    <button type="button" class="btn btn-light w-75 float-end my-1 py-0" data-bs-toggle="modal" data-bs-target="#buyBtnModal" "> 
+        BUY $ @Model.Price
+    </button>
+    <div class="modal fade" id="buyBtnModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Buy it now!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                    <img src="@Model.PosterUrl" alt="@Model.Title" class="w-25">
+                    <p>@Model.Price</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                @{var request = new PurchaseRequestModel(){
+                    MovieId = Model.Id, TotalPrice = (decimal)Model.Price, PurchaseDateTime = DateTime.Today
+                };}
+@*                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" asp-controller="User" asp-action="Buy" asp-asp-route-request="@request">
+                    Purchase
+                </button>*@
+                <button type="submit" class="btn btn-primary" onclick="location.href='@Url.Action("Buy", "User", @request)'">
+
+                    Purchase
+
+                </button>
+                
+                
+
+                @*<a class="btn btn-primary btn-lg" tabindex="-1" role="button">Primary link</a>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

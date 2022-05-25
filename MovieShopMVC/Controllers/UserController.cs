@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ApplicationCore.Contracts.Services;
+using ApplicationCore.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -7,6 +9,30 @@ namespace MovieShopMVC.Controllers
     [Authorize]
     public class UserController : Controller
     {
+        private readonly IUserService _userService;
+
+        public UserController(IUserService userService)
+        {
+            _userService = userService;
+        }
+
+        private int GetUserId()
+        {
+            return Convert.ToInt32(this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Buy(PurchaseRequestModel request)
+        {
+            var uerId = GetUserId();
+            var purchase = await _userService.PurchaseMovie(request, uerId);
+            if (purchase == null)
+            {
+                throw new Exception("Purchase failed");
+            }
+
+            return RedirectToAction("Purchases");
+        }
 
         [HttpGet]
         public async Task<IActionResult> Purchases()
@@ -25,13 +51,21 @@ namespace MovieShopMVC.Controllers
             //var userId = this.HttpContext.User.Claims.FirstOrDefault(x => x.ValueType == ClaimType.Identifier)?.Value;
 
             // Instead, using Filters in ASP.NET
-            var uerId = Convert.ToInt32(this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userId = GetUserId();
+            var purchases = await _userService.GetAllPurchasesForUser(userId);
             // call UserService -> GetMoviesPurchasedByUser(int userId) -> List<MovieCard>
+            return View(purchases);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Favorite()
+        {
+            var uerId = Convert.ToInt32(this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             return View();
         }
 
         [HttpGet]
-        public async Task<IActionResult> Favorites()
+        public async Task<IActionResult> GetFavorites()
         {
             var uerId = Convert.ToInt32(this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             return View();

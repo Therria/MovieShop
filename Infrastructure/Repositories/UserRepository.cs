@@ -1,5 +1,6 @@
 ﻿using ApplicationCore.Contracts.Repositories;
 using ApplicationCore.Entities;
+using ApplicationCore.Models;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -27,5 +28,8 @@ namespace Infrastructure.Repositories
             var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
             return user;
         }
+
+
+
     }
 }
