@@ -106,6 +106,42 @@ namespace Infrastructure.Repositories
             
         }
 
-        
+        public async Task<PagedResultSet<Review>> GetReviews(int id, int pageSize = 30, int pageNumber = 1)
+        {
+            var totalReviewsCountByMovieId = await _dbContext.Reviews.Where(r => r.MovieId == id).CountAsync();
+
+            //if (totalMoviesCountByMovieId == 0)
+            //{
+            //    throw new Exception("No Reviews Found for that genre");
+            //}
+
+            var reviews = await _dbContext.Reviews.Where(r => r.MovieId == id).Include(r => r.Movie)
+                .OrderByDescending(r => r.Rating)
+                .Skip((pageNumber - 1) * pageSize).Take(pageSize)
+                .ToListAsync();
+
+            var pagedReviews = new PagedResultSet<Review>(reviews, pageNumber, pageSize, totalReviewsCountByMovieId);
+
+            return pagedReviews;
+        }
+
+        public async Task<PagedResultSet<Movie>> GetMovies(int pageSize = 30, int pageNumber = 1)
+        {
+            var totalMoviesCount = await _dbContext.Movies.CountAsync();
+
+            if (totalMoviesCount == 0)
+            {
+                throw new Exception("No Movies Found");
+            }
+
+            var movies = await _dbContext.Movies
+                .Skip((pageNumber - 1) * pageSize).Take(pageSize)
+                .ToListAsync();
+
+            var pagedMovies = new PagedResultSet<Movie>(movies, pageNumber, pageSize, totalMoviesCount);
+
+            return pagedMovies;
+
+        }
     }
 }

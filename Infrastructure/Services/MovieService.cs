@@ -101,25 +101,6 @@ namespace Infrastructure.Services
             return new PagedResultSet<MovieCardModel>(movieCards, pageNumber, pageSize, pagedMovies.Count);
         }
 
-
-
-
-        public async Task<List<GenreModel>> GetGenreList()
-        {
-            var genres = await _movieRepository.GetGenreList();
-            var genrelist = new List<GenreModel>();
-            foreach (var genre in genres)
-            {
-                genrelist.Add(new GenreModel
-                {
-                    Id = genre.Id,
-                    Name = genre.Name
-                });
-            }
-
-            return genrelist;
-        }
-
         public async Task<List<MovieCardModel>> GetTop30RatedMovies()
         {
             var movies = await _movieRepository.GetTop30RatedMovies();
@@ -136,6 +117,43 @@ namespace Infrastructure.Services
 
             return movieCards;
 
+        }
+
+        public async Task<PagedResultSet<ReviewDetailsModel>> GetReviewsByMoviePagination(int id, int pageSize = 30, int pageNumber = 1)
+        {
+            var pagedReviews = await _movieRepository.GetReviews(id, pageSize, pageNumber);
+
+            var review = new List<ReviewDetailsModel>();
+            review.AddRange(pagedReviews.Data.Select(r => new ReviewDetailsModel
+            {
+                MovieId = r.MovieId,
+                UserId = r.UserId,
+                Rating = r.Rating,
+                ReviewText = r.ReviewText,
+                Movie = new MovieCardModel
+                {
+                    Id = r.MovieId,
+                    Title = r.Movie.Title,
+                    PosterUrl = r.Movie.PosterUrl,
+                }
+            }));
+
+            return new PagedResultSet<ReviewDetailsModel>(review, pageNumber, pageSize, pagedReviews.Count);
+        }
+
+        public async Task<PagedResultSet<MovieCardModel>> GetMoviesByPagination(int pageSize = 30, int pageNumber = 1)
+        {
+            var pagedMovies = await _movieRepository.GetMovies(pageSize, pageNumber);
+
+            var movies = new List<MovieCardModel>();
+            movies.AddRange(pagedMovies.Data.Select(m => new MovieCardModel
+            {
+                Id = m.Id,
+                Title = m.Title,
+                PosterUrl = m.PosterUrl
+            }));
+
+            return new PagedResultSet<MovieCardModel>(movies, pageNumber, pageSize, pagedMovies.Count);
         }
     }
 }

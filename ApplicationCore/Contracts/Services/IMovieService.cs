@@ -13,6 +13,9 @@ namespace ApplicationCore.Contracts.Services
         Task<List<MovieCardModel>> GetTop30RatedMovies();
         Task<MovieDetailsModel> GetMovieDetails(int movieId);
         Task<PagedResultSet<MovieCardModel>> GetMoviesByGenrePagination(int genreId, int pageSize = 30, int pageNumber = 1);
-        Task<List<GenreModel>> GetGenreList();
+        Task<PagedResultSet<ReviewDetailsModel>> GetReviewsByMoviePagination(int id, int pageSize = 30, int pageNumber = 1);
+        Task<PagedResultSet<MovieCardModel>> GetMoviesByPagination(int pageSize = 30, int pageNumber = 1);
+
+
     }
 }

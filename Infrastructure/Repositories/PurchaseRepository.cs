@@ -18,7 +18,7 @@ namespace Infrastructure.Repositories
 
         public async Task<Purchase> GetPurchasesByUserIdAndMovieId(int userId, int movieId)
         {
-            var purchases = await _dbContext.Purchases
+            var purchases = await _dbContext.Purchases.Include(p => p.Movie)
                 .Where(p => p.UserId == userId && p.MovieId == movieId)
                 .SingleOrDefaultAsync();
 

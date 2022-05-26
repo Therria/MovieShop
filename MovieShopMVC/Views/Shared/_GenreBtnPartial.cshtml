@@ -1,12 +1,12 @@
 ﻿@using ApplicationCore.Contracts.Services
-@inject IMovieService movieService
+@inject IGenreService genreService
 
 
 <a class="nav-link dropdown-toggle text-light" asp-area="" asp-controller="Movies" asp-action="Genres" data-bs-toggle="dropdown" aria-expanded="false">
     Genre
 </a>
 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-    @foreach (var genre in await movieService.GetGenreList())
+    @foreach (var genre in await genreService.GetGenreList())
     {
         <li>
             <a class="dropdown-item" asp-controller="Movies" asp-action="Genres" asp-route-id="@genre.Id">

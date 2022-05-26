@@ -24,8 +24,8 @@ namespace MovieShopMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Buy(PurchaseRequestModel request)
         {
-            var uerId = GetUserId();
-            var purchase = await _userService.PurchaseMovie(request, uerId);
+            var userId = GetUserId();
+            var purchase = await _userService.PurchaseMovie(request, userId);
             if (purchase == null)
             {
                 throw new Exception("Purchase failed");
@@ -60,30 +60,30 @@ namespace MovieShopMVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Favorite()
         {
-            var uerId = Convert.ToInt32(this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userId = Convert.ToInt32(this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             return View();
         }
 
         [HttpGet]
         public async Task<IActionResult> GetFavorites()
         {
-            var uerId = Convert.ToInt32(this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userId = Convert.ToInt32(this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             return View();
         }
 
         [HttpGet]
         public async Task<IActionResult> Reviews()
         {
-            var uerId = GetUserId();
-            var reviews = await _userService.GetAllReviewsByUser(uerId);
+            var userId = GetUserId();
+            var reviews = await _userService.GetAllReviewsByUser(userId);
             return View(reviews);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddReview(ReviewRequestModel model)
         {
-            var uerId = GetUserId();
-            var reviews = await _userService.GetAllReviewsByUser(uerId);
+            var userId = GetUserId();
+            var reviews = await _userService.GetAllReviewsByUser(userId);
             return View(reviews);
         }
 

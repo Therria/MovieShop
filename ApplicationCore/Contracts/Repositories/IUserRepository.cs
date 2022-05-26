@@ -13,6 +13,8 @@ namespace ApplicationCore.Contracts.Repositories
         Task<User> GetUserByEmail(string email);
         Task<User> GetUserById(int id);
 
+        Task<User> GetById(int id);
+
 
         Task<List<Review>> GetReviewsByUserId(int userId);
         Task<Review> GetReviewByUserIdAndMovieId(int userId, int movieId);

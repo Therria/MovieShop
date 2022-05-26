@@ -17,6 +17,17 @@ namespace Infrastructure.Repositories
         {
         }
 
+        public async Task<User> GetById(int id)
+        {
+            var user = await _dbContext.Users.Include(u => u.Favorites).ThenInclude(u => u.Movie)
+                .Include(u => u.Reviews).ThenInclude(u => u.Movie)
+                .Include(u => u.Purchases).ThenInclude(u => u.Movie)
+                .Include(u => u.UsersOfRole).ThenInclude(u => u.Role)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            return user;
+        }
+
         public async Task<User> GetUserByEmail(string email)
         {
             var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);

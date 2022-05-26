@@ -6,16 +6,12 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Models
 {
-    public class ReviewDetailsModel
+    public class FavoriteDetailsModel
     {
+        public int Id { get; set; }
         public int MovieId { get; set; }
         public int UserId { get; set; }
-        public decimal Rating { get; set; }
-        public string? ReviewText { get; set; }
-
 
         public MovieCardModel Movie { get; set; }
-        //public string Title { get; set; }
-        //public string? PosterUrl { get; set; }
     }
 }

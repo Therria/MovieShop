@@ -31,7 +31,7 @@ namespace ApplicationCore.Validators
                 return new ValidationResult("Please enter correct year");
             }
 
-            return base.IsValid(value, validationContext);
+            return ValidationResult.Success;
         }
     }
 }

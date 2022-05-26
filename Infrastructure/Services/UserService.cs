@@ -21,6 +21,89 @@ namespace Infrastructure.Services
             _purchaseRepository = purchaseRepository;
         }
 
+        public async Task<UserDetailsModel> GetUserDetails(int id)
+        {
+            var user = await _userRepository.GetById(id);
+            if (user == null)
+            {
+                return null;
+            }
+            var userDetails = new UserDetailsModel()
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                DateOfBirth = user.DateOfBirth,
+                Email = user.Email,
+                HashedPassword = user.HashedPassword,  // hashedpassword + salt -> password ?
+                Salt = user.Salt,
+                PhoneNumber = user.PhoneNumber,
+                LockoutEndDate = user.LockoutEndDate,
+                LastLoginDateTime = user.LastLoginDateTime
+            };
+
+            foreach (var favorite in userDetails.Favorites)
+            {
+                userDetails.Favorites.Add(new FavoriteDetailsModel { 
+                    Id = favorite.Id, 
+                    MovieId = favorite.MovieId, 
+                    UserId = favorite.UserId, 
+                    Movie = new MovieCardModel 
+                    { 
+                        Id = favorite.MovieId, 
+                        Title = favorite.Movie.Title, 
+                        PosterUrl = favorite.Movie.PosterUrl
+                    }
+                });
+            }
+
+            foreach(var review in userDetails.Reviews)
+            {
+                userDetails.Reviews.Add(new ReviewDetailsModel
+                {
+                    MovieId = review.MovieId,
+                    UserId = review.UserId,
+                    Rating = review.Rating,
+                    ReviewText = review.ReviewText,
+                    Movie = new MovieCardModel 
+                    { 
+                        Id = review.MovieId,
+                        Title = review.Movie.Title,
+                        PosterUrl = review.Movie.PosterUrl
+                    }
+                });
+            }
+
+            foreach(var purchase in userDetails.Purchases)
+            {
+                userDetails.Purchases.Add(new PurchaseDetailsModel
+                {
+                    Id= purchase.Id,
+                    PurchaseDateTime = purchase.PurchaseDateTime,
+                    PurchaseNumber = purchase.PurchaseNumber,
+                    TotalPrice = purchase.TotalPrice,
+                    MovieCard = new MovieCardModel
+                    {
+                        Id = purchase.MovieCard.Id ,
+                        Title = purchase.MovieCard.Title,
+                        PosterUrl= purchase.MovieCard.PosterUrl
+                    }
+                });
+            }
+
+            foreach(var role in userDetails.Roles)
+            {
+                userDetails.Roles.Add(new RoleModel
+                {
+                    Id = role.Id,
+                    Name = role.Name
+                });
+            }
+
+            return userDetails;
+
+        }
+
         public async Task<PurchaseReponseModel> GetAllPurchasesForUser(int id)
         {
             var purchases = await _purchaseRepository.GetPurchasesByUserId(id);
@@ -72,6 +155,12 @@ namespace Infrastructure.Services
         public async Task<bool> IsMoviePurchased(PurchaseRequestModel purchaseRequest, int userId)
         {
             var purchase = await _purchaseRepository.GetPurchasesByUserIdAndMovieId(userId, purchaseRequest.MovieId);
+            return purchase != null;
+        }
+
+        public async Task<bool> IsMoviePurchased(int userId, int movieId)
+        {
+            var purchase = await _purchaseRepository.GetPurchasesByUserIdAndMovieId(userId, movieId);
             return purchase != null;
         }
 
@@ -141,21 +230,25 @@ namespace Infrastructure.Services
 
         public async Task<ReviewResponseModel> GetAllReviewsByUser(int id)
         {
-            var purchases = await _userRepository.GetReviewsByUserId(id);
+            var reviews = await _userRepository.GetReviewsByUserId(id);
             var reviewResponse = new ReviewResponseModel()
             {
                 UserId = id
             };
-            foreach (var purchase in purchases)
+            foreach (var review in reviews)
             {
                 reviewResponse.ReviewDetails.Add(new ReviewDetailsModel()
                 {
-                    MovieId = purchase.MovieId,
-                    UserId = purchase.UserId,
-                    Rating = purchase.Rating,
-                    ReviewText = purchase.ReviewText,
-                    Title = purchase.Movie.Title,
-                    PosterUrl = purchase.Movie.PosterUrl
+                    MovieId = review.MovieId,
+                    UserId = review.UserId,
+                    Rating = review.Rating,
+                    ReviewText = review.ReviewText,
+                    Movie = new MovieCardModel
+                    {
+                        Id = review.MovieId,
+                        Title = review.Movie.Title,
+                        PosterUrl = review.Movie.PosterUrl
+                    }
                 });
             }
 

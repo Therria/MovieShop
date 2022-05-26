@@ -21,10 +21,10 @@ namespace MovieShopAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetByPagination()
         {
-            var movieCards = await _movieService.GetTop30GrossingMovies();
+            var movieCards = await _movieService.GetMoviesByPagination();
             if (movieCards == null)
             {
-                return NotFound();
+                return NotFound(new {ErrorMessage = "No Movie Found"});
             }
             return Ok(movieCards);
         }
@@ -43,7 +43,7 @@ namespace MovieShopAPI.Controllers
 
         [Route("top-rated")]
         [HttpGet]
-        public async Task<IActionResult> TopRated(int id)
+        public async Task<IActionResult> TopRated()
         {
             var movies = await _movieService.GetTop30RatedMovies();
             if (movies == null || !movies.Any())
@@ -91,13 +91,13 @@ namespace MovieShopAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetReviews(int id)
         {
-            var reviews = await _userService.GetAllReviewsByUser(id);
+            var reviews = await _movieService.GetReviewsByMoviePagination(id, 30);
             if (reviews == null)
             {
                 // 404 NotFound
-                return NotFound(new { errorMessage = "No Movies Found" });
+                return NotFound(new { errorMessage = "No Reviews Found" });
             }
-            return Ok();
+            return Ok(reviews);
         }
 
         
