@@ -35,14 +35,14 @@ namespace Infrastructure.Services
                 LastName = user.LastName,
                 DateOfBirth = user.DateOfBirth,
                 Email = user.Email,
-                HashedPassword = user.HashedPassword,  // hashedpassword + salt -> password ?
-                Salt = user.Salt,
+                //HashedPassword = user.HashedPassword,  // hashedpassword + salt -> password ?
+                //Salt = user.Salt,
                 PhoneNumber = user.PhoneNumber,
-                LockoutEndDate = user.LockoutEndDate,
-                LastLoginDateTime = user.LastLoginDateTime
+                //LockoutEndDate = user.LockoutEndDate,
+                //LastLoginDateTime = user.LastLoginDateTime
             };
 
-            foreach (var favorite in userDetails.Favorites)
+            foreach (var favorite in user.Favorites)
             {
                 userDetails.Favorites.Add(new FavoriteDetailsModel { 
                     Id = favorite.Id, 
@@ -57,7 +57,7 @@ namespace Infrastructure.Services
                 });
             }
 
-            foreach(var review in userDetails.Reviews)
+            foreach(var review in user.Reviews)
             {
                 userDetails.Reviews.Add(new ReviewDetailsModel
                 {
@@ -74,7 +74,7 @@ namespace Infrastructure.Services
                 });
             }
 
-            foreach(var purchase in userDetails.Purchases)
+            foreach(var purchase in user.Purchases)
             {
                 userDetails.Purchases.Add(new PurchaseDetailsModel
                 {
@@ -84,9 +84,9 @@ namespace Infrastructure.Services
                     TotalPrice = purchase.TotalPrice,
                     MovieCard = new MovieCardModel
                     {
-                        Id = purchase.MovieCard.Id ,
-                        Title = purchase.MovieCard.Title,
-                        PosterUrl= purchase.MovieCard.PosterUrl
+                        Id = purchase.Movie.Id ,
+                        Title = purchase.Movie.Title,
+                        PosterUrl= purchase.Movie.PosterUrl
                     }
                 });
             }
@@ -172,6 +172,12 @@ namespace Infrastructure.Services
                 throw new Exception("User was not found");
             }
 
+            if (await IsMoviePurchased(purchaseRequest, userId))
+            {
+                throw new Exception("Movie has already been purchased");
+                //return false;
+            }
+
             var purchaseNumber = Guid.NewGuid();
 
             var purchase = new Purchase
@@ -228,13 +234,14 @@ namespace Infrastructure.Services
             return await _userRepository.DeleteReview(userId, movieId);
         }
 
-        public async Task<ReviewResponseModel> GetAllReviewsByUser(int id)
+        public async Task<ReviewResponseModel> GetAllReviewsForUser(int id)
         {
             var reviews = await _userRepository.GetReviewsByUserId(id);
             var reviewResponse = new ReviewResponseModel()
             {
-                UserId = id
+                UserId = id,                
             };
+
             foreach (var review in reviews)
             {
                 reviewResponse.ReviewDetails.Add(new ReviewDetailsModel()
@@ -253,6 +260,66 @@ namespace Infrastructure.Services
             }
 
             return reviewResponse;
+        }
+
+
+        public async Task<bool> AddUserFavorite(FavoriteRequestModal favoriteRequest)
+        {
+            var user = await _userRepository.GetUserById(favoriteRequest.UserId);
+            if (user == null)
+            {
+                throw new Exception("User was not found");
+            }
+
+            return await _userRepository.AddFavorite(favoriteRequest.UserId, favoriteRequest.MovieId);
+        }
+
+        public async Task<bool> DeleteUserFavorite(FavoriteRequestModal favoriteRequest)
+        {
+            var user = await _userRepository.GetUserById(favoriteRequest.UserId);
+            if (user == null)
+            {
+                throw new Exception("User was not found");
+            }
+
+            return await _userRepository.DeleteFavorite(favoriteRequest.UserId, favoriteRequest.MovieId);
+        }
+
+        public async Task<bool> IsMovieFavorited(int userId, int movieId)
+        {
+            var favorite = await _userRepository.GetFavoriteByUserIdAndMovieId(userId, movieId);
+            if (favorite == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public async Task<FavoriteResponseModel> GetAllFavoritesForUser(int userId)
+        {
+            var favorites = await _userRepository.GetFavoriteByUserId(userId);
+            var favoriteResponse = new FavoriteResponseModel()
+            {
+                UserId = userId
+            };
+
+            foreach (var favorite in favorites)
+            {
+                favoriteResponse.FavoriteDetails.Add(new FavoriteDetailsModel()
+                {
+                    Id = favorite.Id,
+                    MovieId = favorite.MovieId,
+                    UserId = favorite.UserId,
+                    Movie = new MovieCardModel
+                    {
+                        Id = favorite.MovieId,
+                        Title = favorite.Movie.Title,
+                        PosterUrl = favorite.Movie.PosterUrl
+                    }
+                });
+            }
+
+            return favoriteResponse;
         }
     }
 }

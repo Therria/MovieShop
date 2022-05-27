@@ -21,5 +21,10 @@ namespace ApplicationCore.Contracts.Repositories
         Task<bool> AddReview(int userId, int movieId, decimal rating, string reviewText);
         Task<bool> UpdateReview(int userId, int movieId, decimal rating, string reviewText);
         Task<bool> DeleteReview(int userId, int movieId);
+
+        Task<List<Favorite>> GetFavoriteByUserId(int userId);
+        Task<Favorite> GetFavoriteByUserIdAndMovieId(int userId, int movieId);
+        Task<bool> AddFavorite(int userId, int movieId);
+        Task<bool> DeleteFavorite(int userId, int movieId);
     }
 }

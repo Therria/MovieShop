@@ -24,6 +24,7 @@ builder.Services.AddScoped<ICastService, CastService>();
 builder.Services.AddScoped<IPurchaseRepository, PurchaseRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 
 builder.Services.AddHttpContextAccessor();
 

@@ -40,6 +40,7 @@ namespace Infrastructure.Repositories
             return user;
         }
 
+
         public async Task<List<Review>> GetReviewsByUserId(int userId)
         {
             var reviews = await _dbContext.Reviews.Include(p => p.Movie)
@@ -51,7 +52,7 @@ namespace Infrastructure.Repositories
         public async Task<Review> GetReviewByUserIdAndMovieId(int userId, int movieId)
         {
             var review = await _dbContext.Reviews
-                .Where(r => r.UserId == userId && r.MovieId == movieId).FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(r => r.UserId == userId && r.MovieId == movieId);
 
             return review;
         }
@@ -113,7 +114,52 @@ namespace Infrastructure.Repositories
         }
 
 
+        public async Task<List<Favorite>> GetFavoriteByUserId(int userId)
+        {
+            var favorites = await _dbContext.Favorites.Include(f => f.Movie)
+                .Where(f => f.UserId == userId).ToListAsync();
 
+            return favorites;
+        }
+
+        public async Task<Favorite> GetFavoriteByUserIdAndMovieId(int userId, int movieId)
+        {
+            var favorite = await _dbContext.Favorites
+                .FirstOrDefaultAsync(f => f.UserId == userId && f.MovieId == movieId);
+
+            return favorite;
+        }
+        
+        public async Task<bool> AddFavorite(int userId, int movieId)
+        {
+            var favorite = await GetFavoriteByUserIdAndMovieId(userId, movieId);
+            if (favorite == null)
+            {
+                var createdFavorite = new Favorite
+                {
+                    MovieId = movieId,
+                    UserId = userId
+                };
+
+                await _dbContext.Favorites.AddAsync(createdFavorite);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            // already favorited
+            return false;
+        }
+        public async Task<bool> DeleteFavorite(int userId, int movieId)
+        {
+            var favorite = await GetFavoriteByUserIdAndMovieId(userId, movieId);
+            if (favorite != null)
+            {
+                _dbContext.Favorites.Remove(favorite);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            // not been favorited
+            return false;
+        }
 
 
     }

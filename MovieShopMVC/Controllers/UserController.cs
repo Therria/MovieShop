@@ -75,7 +75,7 @@ namespace MovieShopMVC.Controllers
         public async Task<IActionResult> Reviews()
         {
             var userId = GetUserId();
-            var reviews = await _userService.GetAllReviewsByUser(userId);
+            var reviews = await _userService.GetAllReviewsForUser(userId);
             return View(reviews);
         }
 
@@ -83,7 +83,7 @@ namespace MovieShopMVC.Controllers
         public async Task<IActionResult> AddReview(ReviewRequestModel model)
         {
             var userId = GetUserId();
-            var reviews = await _userService.GetAllReviewsByUser(userId);
+            var reviews = await _userService.GetAllReviewsForUser(userId);
             return View(reviews);
         }
 
