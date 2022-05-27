@@ -104,6 +104,27 @@ namespace Infrastructure.Services
 
         }
 
+        public async Task<string> GetUserNameById(int Id)
+        {
+            var user = await _userRepository.GetUserById(Id);
+            return user.FirstName + " " + user.LastName;
+        }
+
+        public async Task<bool> IsAdmin(int Id)
+        {
+            var userRoles = await _userRepository.GetUserRole(Id);
+            foreach (var role in userRoles)
+            {
+                if (role.Role.Name.Equals("Admin"))
+                {
+                    return true;
+                } 
+            }
+            return false;
+        }
+
+
+        // Purchase Part
         public async Task<PurchaseReponseModel> GetAllPurchasesForUser(int id)
         {
             var purchases = await _purchaseRepository.GetPurchasesByUserId(id);
@@ -199,6 +220,8 @@ namespace Infrastructure.Services
 
         }
 
+        // Review Part
+
         public async Task<bool> UpdateMovieReview(ReviewRequestModel reviewRequest)
         {
             var user = await _userRepository.GetUserById(reviewRequest.UserId);
@@ -263,6 +286,7 @@ namespace Infrastructure.Services
         }
 
 
+        // Favorite Part
         public async Task<bool> AddUserFavorite(FavoriteRequestModal favoriteRequest)
         {
             var user = await _userRepository.GetUserById(favoriteRequest.UserId);

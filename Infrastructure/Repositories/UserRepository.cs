@@ -41,6 +41,55 @@ namespace Infrastructure.Repositories
         }
 
 
+
+        // Role Part
+        public async Task<bool> AddUserRole(int userId, int roleId = 2)
+        {
+            var userRole = await _dbContext.UserRoles.FirstOrDefaultAsync(u => u.UserId == userId);
+            if (userRole == null)
+            {
+                var createdUserRole = new UserRole
+                {
+                    UserId = userId,
+                    RoleId = roleId
+                };
+                await _dbContext.UserRoles.AddAsync(createdUserRole);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            // Role already exist
+            return false;
+        }
+
+        public async Task<bool> AddRole(string roleName)
+        {
+            var checkRole = await _dbContext.Roles.FirstOrDefaultAsync(r => r.Name == roleName);
+            if (checkRole == null)
+            {
+                var createdRole = new Role
+                {
+                    Name = roleName
+                };
+                await _dbContext.Roles.AddAsync(createdRole);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task<List<UserRole>> GetUserRole(int id)
+        {
+            var userRoles = await _dbContext.UserRoles.Include(ur => ur.Role)
+                .Where(ur => ur.UserId == id)
+                .ToListAsync();
+
+            return userRoles;
+        }
+
+
+
+        // Review Part
         public async Task<List<Review>> GetReviewsByUserId(int userId)
         {
             var reviews = await _dbContext.Reviews.Include(p => p.Movie)
@@ -91,7 +140,10 @@ namespace Infrastructure.Repositories
                     throw new Exception("Review retrive error");
                 }
                 getReview.Rating = rating;
-                getReview.ReviewText = reviewText;
+                if (reviewText != null && reviewText.Length > 0)
+                {
+                    getReview.ReviewText = reviewText;
+                }
                 await _dbContext.SaveChangesAsync();
                 return true;
             }
@@ -114,6 +166,7 @@ namespace Infrastructure.Repositories
         }
 
 
+        // Favorite Part
         public async Task<List<Favorite>> GetFavoriteByUserId(int userId)
         {
             var favorites = await _dbContext.Favorites.Include(f => f.Movie)
@@ -148,6 +201,7 @@ namespace Infrastructure.Repositories
             // already favorited
             return false;
         }
+
         public async Task<bool> DeleteFavorite(int userId, int movieId)
         {
             var favorite = await GetFavoriteByUserIdAndMovieId(userId, movieId);

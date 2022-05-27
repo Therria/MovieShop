@@ -12,8 +12,16 @@ namespace ApplicationCore.Contracts.Repositories
     {
         Task<User> GetUserByEmail(string email);
         Task<User> GetUserById(int id);
-
         Task<User> GetById(int id);
+
+
+
+
+        Task<bool> AddUserRole(int userId, int roleId = 2);
+        Task<bool> AddRole(string roleName);
+        Task<List<UserRole>> GetUserRole(int id);
+
+
 
 
         Task<List<Review>> GetReviewsByUserId(int userId);
@@ -21,6 +29,7 @@ namespace ApplicationCore.Contracts.Repositories
         Task<bool> AddReview(int userId, int movieId, decimal rating, string reviewText);
         Task<bool> UpdateReview(int userId, int movieId, decimal rating, string reviewText);
         Task<bool> DeleteReview(int userId, int movieId);
+
 
         Task<List<Favorite>> GetFavoriteByUserId(int userId);
         Task<Favorite> GetFavoriteByUserIdAndMovieId(int userId, int movieId);

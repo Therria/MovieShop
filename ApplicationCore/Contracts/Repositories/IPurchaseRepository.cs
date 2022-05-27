@@ -12,5 +12,6 @@ namespace ApplicationCore.Contracts.Repositories
         Task<List<Movie>> GetPurchasesByMovieId(int movieId);
         Task<List<Purchase>> GetPurchasesByUserId(int userId);
         Task<Purchase> GetPurchasesByUserIdAndMovieId(int userId, int movieId);
+        Task<List<Movie>> GetTop30PurchasedMovies(DateTime fromDate, DateTime toDate);
     }
 }

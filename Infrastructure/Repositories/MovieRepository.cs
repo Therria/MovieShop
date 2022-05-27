@@ -19,8 +19,6 @@ namespace Infrastructure.Repositories
 
         public async Task<List<Movie>> GetTop30GrossingMovies()
         {
-
-            // var top30Movies = movies.GetMovies().OrderByDescending(m => m.Revenue).Take(30);
             var movies = await _dbContext.Movies.OrderByDescending(m => m.Revenue).Take(30).ToListAsync();
 
             return movies;
@@ -142,6 +140,42 @@ namespace Infrastructure.Repositories
 
             return pagedMovies;
 
+        }
+
+        public async Task<bool> AddMovieGenre(int movieId, int genreId)
+        {
+            var checkMovieGenre = await _dbContext.MovieGenres.FirstOrDefaultAsync(mg => mg.MovieId == movieId && mg.GenreId == genreId);
+            if (checkMovieGenre == null)
+            {
+                var createdMovieGenre = new MovieGenre
+                {
+                    MovieId = movieId,
+                    GenreId = genreId
+                };
+
+                await _dbContext.MovieGenres.AddAsync(createdMovieGenre);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
+        //public async Task<Genre> GetGenreByName(string name)
+        //{
+        //    var genre = await _dbContext.Genres.SingleOrDefaultAsync(g => g.Name == name);
+        //    return genre;
+        //}
+
+        public async Task<Genre> GetGenreById(int id)
+        {
+            var genre = await _dbContext.Genres.SingleOrDefaultAsync(g => g.Id == id);
+            return genre;
+        }
+
+        public async Task<MovieGenre> GetMovieGenreByMovieIdAndGenreId(int movieId, int genreId)
+        {
+            var movieGenre = await _dbContext.MovieGenres.SingleOrDefaultAsync(mg => mg.MovieId == movieId && mg.GenreId == genreId);
+            return movieGenre;
         }
     }
 }

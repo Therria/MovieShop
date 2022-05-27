@@ -41,5 +41,40 @@ namespace Infrastructure.Repositories
 
             return purchases;
         }
+
+        public async Task<List<Movie>> GetTop30PurchasedMovies(DateTime fromDate, DateTime toDate)
+        {
+            var topPurchasedIds = await _dbContext.Purchases.Include(p => p.Movie)
+                .Where(p => p.PurchaseDateTime >= fromDate && p.PurchaseDateTime <= toDate)
+                .GroupBy(p => p.MovieId)
+                .Select(m => new
+                {
+                    MovieId = m.Key,
+                    PurchaseCount = m.Count()
+                })
+                .OrderByDescending(m => m.PurchaseCount)
+                .Select(m => m.MovieId)
+                .Take(30)
+                .ToListAsync();
+
+            if (topPurchasedIds == null || !topPurchasedIds.Any())
+            {
+                topPurchasedIds = await _dbContext.Purchases.Include(p => p.Movie)
+                .Where(p => p.PurchaseDateTime >= DateTime.Today.AddDays(-90) && p.PurchaseDateTime <= DateTime.Today)
+                .GroupBy(p => p.MovieId)
+                .Select(m => new
+                {
+                    MovieId = m.Key,
+                    PurchaseCount = m.Count()
+                })
+                .OrderByDescending(m => m.PurchaseCount)
+                .Select(m => m.MovieId)
+                .Take(30)
+                .ToListAsync();
+            }
+            var movies = await _dbContext.Movies.Where(m => topPurchasedIds.Contains(m.Id)).ToListAsync();
+            return movies;
+
+        }
     }
 }

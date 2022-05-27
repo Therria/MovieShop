@@ -39,7 +39,7 @@ namespace MovieShopMVC.Controllers
             if (user == null)
             {
                 throw new Exception("Register failed");
-            }
+            }            
             
             return RedirectToAction("Login");
         }

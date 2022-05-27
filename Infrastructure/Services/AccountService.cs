@@ -76,10 +76,17 @@ namespace Infrastructure.Services
                 DateOfBirth = model.DateOfBirth
             };
 
-            var createdUser = _userRepository.Add(user);
+            var createdUser = await _userRepository.Add(user);
 
             if (createdUser.Id > 0)
             {
+                // After registered successfully, automatically add user role and set to user(default) role
+                var addUserRole = await _userRepository.AddUserRole(createdUser.Id);
+                if (addUserRole == null || !addUserRole)
+                {
+                    throw new Exception("Add User Role Failed");
+                }
+
                 return true;
             }
 

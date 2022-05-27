@@ -12,6 +12,8 @@ namespace ApplicationCore.Contracts.Services
     public interface IUserService
     {
         Task<UserDetailsModel> GetUserDetails(int id);
+        Task<string> GetUserNameById(int Id);
+        Task<bool> IsAdmin(int Id);
 
 
         Task<bool> PurchaseMovie(PurchaseRequestModel purchaseRequest, int userId);
